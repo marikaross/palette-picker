@@ -1,0 +1,23 @@
+body,
+main {
+  width: 100vw;
+  height: 100vh;
+}
+
+article {
+  border: 1px solid #000;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 18%;
+  height: 75vh;
+}
+
+section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
