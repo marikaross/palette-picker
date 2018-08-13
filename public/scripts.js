@@ -14,6 +14,6 @@ function makePalette() {
   for (var i = 1; i < 6; i++) {
     var color = getAColor()
     $(`.color${[i]}`).css('background-color', color)
-    $(`.color${[i]}`).text(color)
+    $(`.color${[i]}-text`).text(color)
   }
 }
