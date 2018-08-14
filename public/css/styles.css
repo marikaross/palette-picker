@@ -6,8 +6,9 @@ main {
 
 article {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   width: 18%;
   height: 75vh;
 }
@@ -19,4 +20,26 @@ section {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
+}
+
+.lock {
+  background-image: url('../images/unlock.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 20px;
+}
+
+.locked {
+  background-image: url('../images/lock.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 20px;
 }
