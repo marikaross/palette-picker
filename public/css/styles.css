@@ -22,13 +22,24 @@ section {
   justify-content: center;
 }
 
-button {
+.lock {
+  background-image: url('../images/unlock.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  border-radius: 25px;
+  width: 35px;
+  height: 35px;
+  margin-bottom: 20px;
+}
+
+.locked {
   background-image: url('../images/lock.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
   border-radius: 25px;
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 35px;
   margin-bottom: 20px;
 }
