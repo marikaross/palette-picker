@@ -1,4 +1,5 @@
 $('.palette').on('click', makePalette)
+$('.lock').on('click', toggleLock)
 
 
 function getAColor() {
@@ -16,4 +17,8 @@ function makePalette() {
     $(`.color${[i]}`).css('background-color', color)
     $(`.color${[i]}-text`).text(color)
   }
+}
+
+function toggleLock() {
+  $('.lock').toggleClass('.locked')
 }
