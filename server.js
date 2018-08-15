@@ -41,7 +41,7 @@ app.get('app/v1/palettes', (request, response) => {
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
 
-    for (let requiredParameter of ['name']) {
+    for (let requiredParameter of ['project_name']) {
       if (!project[requiredParameter]) {
         return response.status(422).send({ error: `Expected format: { name: <STRING> }. You are missing a "${requiredParameter}" property.`});
       }
@@ -58,7 +58,7 @@ app.post('/api/v1/projects', (request, response) => {
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
 
-  for (let requiredParameter of ['name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'project_id']) {
+  for (let requiredParameter of ['palette_name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'project_id']) {
     if (!palette[requiredParameter]) {
       return response.status(422).send({error: `Expected format: {name: <STRING>, color_1: <STRING>, color_2: <STRING>, color_3: <STRING>, color_4: <STRING>, color_5: <STRING>, project_id: <NUMBER>}. You are missing a "${requiredParameter}" property.`});
     }
@@ -89,9 +89,9 @@ app.get('/api/v1/projects/:id', (request, response) => {
 });
 
 app.get('/api/v1/palettes/:id', (request, response) => {
-  database('palettes').where('id', request.params.id).select()
+  database('palettes').where('project_id', request.params.id).select()
     .then(palettes => {
-      if(projects.length) {
+      if(palettes.length) {
         response.status(200).json(palettes);
       } else {
         response.status(404).json({

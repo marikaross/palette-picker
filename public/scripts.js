@@ -46,7 +46,8 @@ function savePalette() {
 function saveProject(event) {
   event.preventDefault()
   var newProject = $('.project-name').val()
-  const project = {name: newProject}
+  $('.folder-name').append(`<option>${newProject}</option>`)
+  const project = {project_name: newProject}
   postProject(project)
 }
 
@@ -66,31 +67,50 @@ function postProject(project) {
 function getProjects() {
   return fetch('http://localhost:3000/api/v1/projects')
     .then(response => response.json())
-    .then(result => getPalettes(result))
+    .then(result => {
+      populateDropdown(result)
+      getPalettes(result)})
     .catch(error => console.log(error))
 }
 
-
-
-function showProjects(results) {
-  results.forEach(result => {
-    return $('.projects').append(`
-      <h2>${result.name}</h2>
-      <h3>palette name</h3>
-      <section class='tiny-palette'>
-        <article>color[0]</article>
-        <article>color[1]</article>
-        <article>color[2]</article>
-        <article>color[3]</article>
-        <article>color[4]</article>
-      </section>
-      `)
+function populateDropdown(data) {
+  data.forEach(entry => {
+    $('.folder-name').append(`<option value=${entry.id}>${entry.project_name}</option>`)
   })
 }
 
-function getPalettes() {
+
+
+// function showProjects(results) {
+//   results.forEach(result => {
+//     return $('.projects').append(`
+//       <h2>${result.name}</h2>
+//       <h3>palette name</h3>
+//       <section class='tiny-palette'>
+//         <article>color[0]</article>
+//         <article>color[1]</article>
+//         <article>color[2]</article>
+//         <article>color[3]</article>
+//         <article>color[4]</article>
+//       </section>
+//       `)
+//   })
+// }
+
+function getPalettes(results) {
+  var projectIds = results.map(result => {
+    console.log(result)
+    var palettes = fetchPalettes(result.id)
+  })
 //iterate through projects and fetch corresponding palettes
 
+}
+
+function fetchPalettes(id) {
+  console.log(id)
+  fetch(`http://localhost:3000/api/v1/palettes/${id}`)
+    .then(response => response.json())
+    .then(result => console.log(result))
 }
 
 
