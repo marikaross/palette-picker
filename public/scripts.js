@@ -3,6 +3,13 @@ $('.lock').on('click', toggleLock);
 $('.save').on('click', savePalette);
 $('window').load(getProjects);
 $('window').load(makePalette);
+$('.save-project').on('submit', saveProject);
+
+
+function welcome() {
+  getProjects()
+  makePalette()
+}
 
 
 function getAColor() {
@@ -35,8 +42,8 @@ function savePalette() {
 
 }
 
-function saveProject() {
-
+function saveProject(event) {
+  var newProject = 
 }
 
 function getProjects() {
@@ -48,8 +55,10 @@ function getProjects() {
 }
 
 function showProjects(results) {
+  results.map(result => {
+    return 
   $('.projects').append(`
-    <h2>project name</h2>
+    <h2>${result.name}</h2>
       <h3>palette name</h3>
       <section class='tiny-palette'>
         <article>color[0]</article>
@@ -59,6 +68,7 @@ function showProjects(results) {
         <article>color[4]</article>
       </section>
       `)
+  })
 }
 
 function getPalette() {
