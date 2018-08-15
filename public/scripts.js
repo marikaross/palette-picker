@@ -1,15 +1,15 @@
 $('.palette').on('click', makePalette);
 $('.lock').on('click', toggleLock);
 $('.save').on('click', savePalette);
-$('window').load(getProjects);
-$('window').load(makePalette);
 $('.save-project').on('submit', saveProject);
 
+$(window).on('load', welcome);
 
 function welcome() {
-  getProjects()
   makePalette()
+  getProjects()
 }
+
 
 
 function getAColor() {
@@ -22,6 +22,7 @@ function getAColor() {
 }
 
 function makePalette() {
+  // console.log('hi')
   for (var i = 1; i < 6; i++) {
     if(!$(this).children(`.color${[i]}`).hasClass('.locked-color')) {
       var color = getAColor()
@@ -43,36 +44,73 @@ function savePalette() {
 }
 
 function saveProject(event) {
-  var newProject = 
+  event.preventDefault()
+  var newProject = $('.project-name').val()
+  $('.folder-name').append(`<option>${newProject}</option>`)
+  const project = {project_name: newProject}
+  postProject(project)
 }
 
-function getProjects() {
-  fetch('http://localhost:3000/api/v1/projects')
-    .then(response => response.json())
-    .then(result => showProjects(results))
-    .catch(error => throw error)
-
-}
-
-function showProjects(results) {
-  results.map(result => {
-    return 
-  $('.projects').append(`
-    <h2>${result.name}</h2>
-      <h3>palette name</h3>
-      <section class='tiny-palette'>
-        <article>color[0]</article>
-        <article>color[1]</article>
-        <article>color[2]</article>
-        <article>color[3]</article>
-        <article>color[4]</article>
-      </section>
-      `)
+function postProject(project) {
+  var url = 'http://localhost:3000/api/v1/projects'
+  fetch(url, 
+    {method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(project)
+    })
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error.message)
   })
 }
 
-function getPalette() {
+function getProjects() {
+  return fetch('http://localhost:3000/api/v1/projects')
+    .then(response => response.json())
+    .then(result => {
+      populateDropdown(result)
+      getPalettes(result)})
+    .catch(error => console.log(error))
+}
 
+function populateDropdown(data) {
+  data.forEach(entry => {
+    $('.folder-name').append(`<option value=${entry.id}>${entry.project_name}</option>`)
+  })
+}
+
+
+
+// function showProjects(results) {
+//   results.forEach(result => {
+//     return $('.projects').append(`
+//       <h2>${result.name}</h2>
+//       <h3>palette name</h3>
+//       <section class='tiny-palette'>
+//         <article>color[0]</article>
+//         <article>color[1]</article>
+//         <article>color[2]</article>
+//         <article>color[3]</article>
+//         <article>color[4]</article>
+//       </section>
+//       `)
+//   })
+// }
+
+function getPalettes(results) {
+  var projectIds = results.map(result => {
+    console.log(result)
+    var palettes = fetchPalettes(result.id)
+  })
+//iterate through projects and fetch corresponding palettes
+
+}
+
+function fetchPalettes(id) {
+  console.log(id)
+  fetch(`http://localhost:3000/api/v1/palettes/${id}`)
+    .then(response => response.json())
+    .then(result => console.log(result))
 }
 
 
