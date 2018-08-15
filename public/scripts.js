@@ -59,6 +59,10 @@ function postProject(project) {
     body: JSON.stringify(project)
     })
   .then(response => response.json())
+  .then(id => {
+     $('.folder-name').append(`<option value='${id}'>${project.project_name}</option>`)
+  })
+
   .catch(error => {
     console.log(error.message)
   })
@@ -107,7 +111,6 @@ function getPalettes(results) {
 }
 
 function fetchPalettes(id) {
-  console.log(id)
   fetch(`http://localhost:3000/api/v1/palettes/${id}`)
     .then(response => response.json())
     .then(result => console.log(result))
