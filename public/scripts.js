@@ -1,15 +1,15 @@
 $('.palette').on('click', makePalette);
 $('.lock').on('click', toggleLock);
 $('.save').on('click', savePalette);
-// $('window').load(getProjects);
-// $('window').load(makePalette);
-// $('.save-project').on('submit', saveProject);
+$('.save-project').on('submit', saveProject);
 
+$(window).on('load', makePalette);
 
-// function welcome() {
-//   getProjects()
-//   makePalette()
-// }
+function welcome() {
+  getProjects()
+  makePalette()
+}
+
 
 
 function getAColor() {
@@ -22,6 +22,7 @@ function getAColor() {
 }
 
 function makePalette() {
+  console.log('hi')
   for (var i = 1; i < 6; i++) {
     if(!$(this).children(`.color${[i]}`).hasClass('.locked-color')) {
       var color = getAColor()
@@ -42,9 +43,25 @@ function savePalette() {
 
 }
 
-// function saveProject(event) {
-//   var newProject = 
-// }
+function saveProject(event) {
+  event.preventDefault()
+  var newProject = $('.project-name').val()
+  const project = {name: newProject}
+  postProject(project)
+}
+
+function postProject(project) {
+  var url = 'http://localhost:3000/api/v1/projects'
+  fetch(url, 
+    {method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(project)
+    })
+  .then(response => response.json())
+  .catch(error => {
+    console.log(error.message)
+  })
+}
 
 // function getProjects() {
 //   fetch('http://localhost:3000/api/v1/projects')
