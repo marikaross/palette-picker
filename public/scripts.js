@@ -33,7 +33,6 @@ function makePalette() {
       $(`.color${[i]}-text`).text(color);
     }
   }
-
 }
 
 function toggleLock(event) {
@@ -51,8 +50,8 @@ function savePalette(event) {
   console.log(paletteName)
   var projectId = $('select option:selected').val();
   var paletteToSave = { palette_name: paletteName, hexCodes: [...colors], project_id: projectId}
-  colors = []
   postPalette(paletteToSave)
+  colors = []
 }
 
 function postPalette(palette) {
@@ -106,7 +105,10 @@ function getProjects() {
     .then(response => response.json())
     .then(result => {
       populateDropdown(result)
-      getPalettes(result)})
+      var palettes = getPalettes(result)
+      console.log(palettes)
+      return palettes
+    })
     .catch(error => console.log(error))
 }
 
@@ -118,7 +120,7 @@ function populateDropdown(data) {
 
 
 
-// function showProjects(results) {
+// function showProjectsAndPalettes(results) {
 //   results.forEach(result => {
 //     return $('.projects').append(`
 //       <h2>${result.name}</h2>
@@ -135,17 +137,22 @@ function populateDropdown(data) {
 // }
 
 function getPalettes(results) {
+  // console.log(results)
   var projectIds = results.map(result => {
-    var palettes = fetchPalettes(result.id)
+    return fetchPalettes(result.id)
   })
-//iterate through projects and fetch corresponding palettes
 
+  var resolvedPromises = Promise.all(projectIds)
+  return resolvedPromises
 }
 
 function fetchPalettes(id) {
-  fetch(`http://localhost:3000/api/v1/palettes/${id}`)
+  // console.log(id)
+  var palettes = fetch(`http://localhost:3000/api/v1/palettes/${id}`)
     .then(response => response.json())
-    // .then(result => console.log(result))
+    .then(result => console.log(result)) 
+    // console.log(palettes)
+    return palettes
 }
 
 

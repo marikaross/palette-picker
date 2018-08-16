@@ -104,18 +104,18 @@ app.get('/api/v1/palettes/:id', (request, response) => {
     });
 })
 
-// app.delete('/api/v1/palettes/:id', (request, response) => {
-//   database('palettes').where('id', request.params.id).select()
-//     .then(palette => {
-//       if (palette.length) {
-//         response.status(204).del()
-//       } else {
-//         response.status(404).json( {
-//           error: `Could not find palette with id ${request.params.id}`
-//         });
-//       }
-//     })
-// })
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  database('palettes').where('id', request.params.id).del()
+    .then(palette => {
+      if (palette.length) {
+        response.status(200).json(palettes)
+      } else {
+        response.status(404).json( {
+          error: `Could not find palette with id ${request.params.id}`
+        });
+      }
+    })
+})
 
 
 
