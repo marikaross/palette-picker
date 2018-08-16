@@ -2,8 +2,11 @@ $('.palette').on('click', makePalette);
 $('.lock').on('click', toggleLock);
 $('.save').on('click', savePalette);
 $('.save-project').on('submit', saveProject);
+$('.save-palette').on('submit', savePalette);
 
 $(window).on('load', welcome);
+
+var colors = []
 
 function welcome() {
   makePalette()
@@ -39,9 +42,39 @@ function toggleLock(event) {
   $(this).closest('article').toggleClass('.locked-color');
 }
 
-function savePalette() {
-
+function savePalette(event) {
+  event.preventDefault()
+  $('.hexCode').each(function() {
+    colors.push($(this).text())
+  })
+  var paletteName = $('.palette-name').val()
+  console.log(paletteName)
+  var projectId = $('select option:selected').val();
+  var paletteToSave = { palette_name: paletteName, hexCodes: [...colors], project_id: projectId}
+  colors = []
+  postPalette(paletteToSave)
 }
+
+function postPalette(palette) {
+  console.log(palette)
+  var url = 'http://localhost:3000/api/v1/palettes';
+  fetch(url, 
+    {method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      palette_name: palette.palette_name, 
+      color_1: palette.hexCodes[0], 
+      color_2: palette.hexCodes[1],
+      color_3: palette.hexCodes[2],
+      color_4: palette.hexCodes[3],
+      color_5: palette.hexCodes[4],
+      project_id: palette.project_id
+      })
+    })
+  .then(response => response.json())
+  .catch(error => console.log(error.message))
+}
+
 
 function saveProject(event) {
   event.preventDefault()
@@ -103,7 +136,6 @@ function populateDropdown(data) {
 
 function getPalettes(results) {
   var projectIds = results.map(result => {
-    console.log(result)
     var palettes = fetchPalettes(result.id)
   })
 //iterate through projects and fetch corresponding palettes
@@ -113,7 +145,8 @@ function getPalettes(results) {
 function fetchPalettes(id) {
   fetch(`http://localhost:3000/api/v1/palettes/${id}`)
     .then(response => response.json())
-    .then(result => console.log(result))
+    // .then(result => console.log(result))
 }
+
 
 
