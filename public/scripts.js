@@ -116,7 +116,7 @@ function postProject(project) {
 
 async function getProjects() {
   $('.saved-projects').empty();
-  const response = await fetch('http://localhost:3000/api/v1/projects');
+  const response = await fetch('/api/v1/projects');
   const projects = await response.json();
   const dropDown = populateDropdown(projects)
   projects.forEach(project => {
