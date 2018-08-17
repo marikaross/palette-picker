@@ -56,7 +56,7 @@ function savePalette(event) {
 
 function postPalette(palette) {
   console.log(palette)
-  var url = 'http://localhost:3000/api/v1/palettes';
+  var url = '/api/v1/palettes';
   fetch(url, 
     {method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -84,7 +84,7 @@ function saveProject(event) {
 }
 
 function postProject(project) {
-  var url = 'http://localhost:3000/api/v1/projects'
+  var url = '/api/v1/projects'
   fetch(url, 
     {method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -101,7 +101,7 @@ function postProject(project) {
 }
 
 // function getProjects() {
-//   return fetch('http://localhost:3000/api/v1/projects')
+//   return fetch('/api/v1/projects')
 //     .then(response => response.json())
 //     .then(result => {
 //       populateDropdown(result)
@@ -134,7 +134,7 @@ async function getProjects() {
 
 async function appendPalettes(projectId) {
   $('project-container').empty()
-  const response = await fetch('http://localhost:3000/api/v1/palettes');
+  const response = await fetch('/api/v1/palettes');
   const palettes = await response.json();
   palettes.forEach(palette => {
     if (palette.project_id === projectId) {
@@ -189,7 +189,7 @@ function populateDropdown(data) {
 
 // function fetchPalettes(id) {
 //   // console.log(id)
-//   return fetch(`http://localhost:3000/api/v1/palettes/${id}`)
+//   return fetch(`/api/v1/palettes/${id}`)
 //     .then(response => response.json())
 //     .then(result => console.log(result)) 
    
