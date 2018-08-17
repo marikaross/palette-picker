@@ -100,16 +100,57 @@ function postProject(project) {
   })
 }
 
-function getProjects() {
-  return fetch('http://localhost:3000/api/v1/projects')
-    .then(response => response.json())
-    .then(result => {
-      populateDropdown(result)
-      var palettes = getPalettes(result)
-      console.log(palettes)
-      return palettes
-    })
-    .catch(error => console.log(error))
+// function getProjects() {
+//   return fetch('http://localhost:3000/api/v1/projects')
+//     .then(response => response.json())
+//     .then(result => {
+//       populateDropdown(result)
+//       getPalettes(result)
+//       .then(bananas => console.log
+//         (bananas))
+//       // console.log(palettes)
+//       // return palettes
+//     })
+//     .catch(error => console.log(error))
+// }
+
+async function getProjects() {
+  $('.saved-projects').empty();
+  const response = await fetch('http://localhost:3000/api/v1/projects');
+  const projects = await response.json();
+  const dropDown = populateDropdown(projects)
+  projects.forEach(project => {
+    $('.saved-projects').append(`
+      <div class="project-container" id="project${project.id}">
+      <h3 class="project-title">
+        ${project.project_name}
+      </h3>
+      <button class="delete-project" id="${project.id}">trash</button>
+      </div>
+      `)
+    appendPalettes(project.id)
+  })
+}
+
+async function appendPalettes(projectId) {
+  $('project-container').empty()
+  const response = await fetch('http://localhost:3000/api/v1/palettes');
+  const palettes = await response.json();
+  palettes.forEach(palette => {
+    if (palette.project_id === projectId) {
+      $(`#${projectId}`).append(`
+        <section>
+          <h4>${palette.palette_name}</h4>
+          <section>
+            <article style="background-color: ${palette.color_1}">${palette.color_1}</article>
+            <article style="background-color: ${palette.color_2}">${palette.color_2}</article>
+            <article style="background-color: ${palette.color_3}">${palette.color_3}</article>
+            <article style="background-color: ${palette.color_4}">${palette.color_4}</article>
+            <article style="background-color: ${palette.color_5}">${palette.color_5}</article>
+          </section>
+        </section>`)
+    }
+  })
 }
 
 function populateDropdown(data) {
@@ -136,24 +177,23 @@ function populateDropdown(data) {
 //   })
 // }
 
-function getPalettes(results) {
-  // console.log(results)
-  var projectIds = results.map(result => {
-    return fetchPalettes(result.id)
-  })
+// function getPalettes(results) {
+//   var projectIds = results.map(result => {
+//     return fetchPalettes(result.id)
+//   })
 
-  var resolvedPromises = Promise.all(projectIds)
-  return resolvedPromises
-}
+//   var resolvedPromises = Promise.all(projectIds)
+//   // console.log(resolvedPromises)
+//   return resolvedPromises
+// }
 
-function fetchPalettes(id) {
-  // console.log(id)
-  var palettes = fetch(`http://localhost:3000/api/v1/palettes/${id}`)
-    .then(response => response.json())
-    .then(result => console.log(result)) 
-    // console.log(palettes)
-    return palettes
-}
+// function fetchPalettes(id) {
+//   // console.log(id)
+//   return fetch(`http://localhost:3000/api/v1/palettes/${id}`)
+//     .then(response => response.json())
+//     .then(result => console.log(result)) 
+   
+// }
 
 
 

@@ -27,7 +27,7 @@ app.get('/api/v1/projects', (request, response) => {
   });
 });
 
-app.get('app/v1/palettes', (request, response) => {
+app.get('/api/v1/palettes', (request, response) => {
   database('palettes').select()
   .then((palettes) => {
     response.status(200).json(palettes);
@@ -108,11 +108,10 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes').where('id', request.params.id).del()
     .then(palette => {
       if (palette.length) {
-        response.status(200).json(palettes)
+        response.status(404).json( {error: `Could not find palette with id ${request.params.id}`} )
       } else {
-        response.status(404).json( {
-          error: `Could not find palette with id ${request.params.id}`
-        });
+        response.status(200).json(palette)
+      
       }
     })
 })
@@ -122,3 +121,5 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 });
+
+module.exports = app;
