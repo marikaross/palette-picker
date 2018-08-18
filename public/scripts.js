@@ -4,10 +4,13 @@ $('.save').on('click', savePalette);
 $('.save-project').on('submit', saveProject);
 $('.save-palette').on('submit', savePalette);
 $('.saved-projects').on('click', '.delete', deletePalette);
+$('.saved-projects').on('click', '.mini-color', makeItBig)
+
 
 $(window).on('load', welcome);
 
 var colors = []
+var savedColors = []
 
 function welcome() {
   makePalette()
@@ -55,7 +58,6 @@ function savePalette(event) {
 }
 
 function postPalette(palette) {
-  console.log(palette)
   var url = '/api/v1/palettes';
   fetch(url, 
     {method: 'POST',
@@ -70,7 +72,7 @@ function postPalette(palette) {
       project_id: palette.project_id
       })
     })
-  .then(response => response.json())
+  .then(response => console.log(response))
   .catch(error => console.log(error.message))
 }
 
@@ -124,14 +126,14 @@ async function appendPalettes(projectId) {
   palettes.forEach(palette => {
     if (palette.project_id === projectId) {
       $(`#${projectId}`).append(`
-        <section class='palette-section'>
+        <section class='palette-section' id="${palette.id}">
           <h4>${palette.palette_name}</h4>
           <section>
-            <article style="background-color: ${palette.color_1}">${palette.color_1}</article>
-            <article style="background-color: ${palette.color_2}">${palette.color_2}</article>
-            <article style="background-color: ${palette.color_3}">${palette.color_3}</article>
-            <article style="background-color: ${palette.color_4}">${palette.color_4}</article>
-            <article style="background-color: ${palette.color_5}">${palette.color_5}</article>
+            <article class="mini-color" style="background-color: ${palette.color_1}">${palette.color_1}</article>
+            <article class="mini-color" style="background-color: ${palette.color_2}">${palette.color_2}</article>
+            <article class="mini-color" style="background-color: ${palette.color_3}">${palette.color_3}</article>
+            <article class="mini-color" style="background-color: ${palette.color_4}">${palette.color_4}</article>
+            <article class="mini-color" style="background-color: ${palette.color_5}">${palette.color_5}</article>
           </section>
           <button class="delete" id="${palette.id}">discard</button>
         </section>`)
@@ -155,7 +157,21 @@ async function deletePalette(event) {
 
   const response = fetch(`/api/v1/palettes/${id}`, responseBody);
   const result = await response.json();
+}
 
+async function makeItBig(event) {
+  const id = $(event.target).parent().parent().attr('id')
+  const response = await fetch(`/api/v1/palettes/${id}`)
+  const miniPalette = await response.json()
+  const paletteObj = miniPalette[0]
+  const keys = Object.keys(paletteObj).filter(key => {
+    return key.split('_')[0] === 'color'
+  })
+  const hexCodes = keys.map(code => paletteObj[code])
+  for (var i = 1; i < 6; i++) {
+    $(`.color${[i]}`).css('background-color', hexCodes[i]);
+    $(`.color${[i]}-text`).text(hexCodes[i]);
+  }
 }
 
 

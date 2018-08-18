@@ -216,3 +216,20 @@ describe('POST /api/v1/projects', () => {
     done()
   })
 })
+
+describe('GET to /api/v1/projects/:id', () => {
+  it('should return a single project', done => {
+    chai.request(server)
+    .get('/api/v1/projects/1')
+    response.should.have.status(200);
+      response.should.be.json;
+      response.body.should.be.a('array');
+      response.body.length.should.equal(1);
+      response.body[0].should.have.property('project_name');
+      response.body[0].project_name.should.equal('Party Time');
+      response.body[0].should.have.property('id');
+      response.body[0].id.should.equal(1);
+    })
+    done()
+  })
+})
