@@ -25,8 +25,48 @@ describe('GET to /api/v1/projects', () => {
   })
 })
 
-describe ('GET to /api/v1/palettes' () => {
+describe ('GET to /api/v1/palettes', () => {
   it('should return all palettes', done => {
-    done()
+    chai.request(server)
+    .get('/api/v1/palettes')
+    .end((err, response) => {
+      response.should.have.status(200);
+      response.should.be.json;
+      response.body.should.be.a('array');
+      response.body.length.should.equal(2);
+      response.body[0].should.have.property(palette_name);
+      response.body[0].should.palette_name.should.equal('best');
+      response.body[0].should.have.property(color_1);
+      response.body[0].color_1.should.equal('#30E8A7');
+      response.body[0].should.have.property(color_2);
+      response.body[0].color_2.should.equal('#FC68D1');
+      response.body[0].should.have.property(color_3);
+      response.body[0].color_3.should.equal('#A0CE39');
+      response.body[0].should.have.property(color_4);
+      response.body[0].color_4.should.equal('#D5E403');
+      response.body[0].should.have.property(color_5);
+      response.body[0].color_5.should.equal('#819ADD');
+      response.body[0].should.have.property('project_id');
+      response.body[0].project_id.should.equal(2);
+      response.body[0].should.have.property(id);
+      response.body[0].id.should.equal(1);
+      response.body[1].should.have.property(palette_name);
+      response.body[1].should.palette_name.should.equal('so good');
+      response.body[1].should.have.property(color_1);
+      response.body[1].color_1.should.equal('#30E8A7');
+      response.body[1].should.have.property(color_2);
+      response.body[1].color_2.should.equal('#FC68D1');
+      response.body[1].should.have.property(color_3);
+      response.body[1].color_3.should.equal('#A0CE39');
+      response.body[1].should.have.property(color_4);
+      response.body[1].color_4.should.equal('#D5E403');
+      response.body[1].should.have.property(color_5);
+      response.body[1].color_5.should.equal('#819ADD');
+      response.body[1].should.have.property('project_id');
+      response.body[1].project_id.should.equal(2);
+      response.body[1].should.have.property(id);
+      response.body[1].id.should.equal(1);
+    })
+    done();
   })
 })
