@@ -25,7 +25,6 @@ function getAColor() {
 }
 
 function makePalette() {
-  // console.log('hi')
   for (var i = 1; i < 6; i++) {
     if(!$(this).children(`.color${[i]}`).hasClass('.locked-color')) {
       var color = getAColor()
@@ -122,10 +121,9 @@ async function getProjects() {
   projects.forEach(project => {
     $('.saved-projects').append(`
       <div class="project-container" id="project${project.id}">
-      <h3 class="project-title">
+      <h3 class="project-title" id="${project.id}">
         ${project.project_name}
       </h3>
-      <button class="delete-project" id="${project.id}">trash</button>
       </div>
       `)
     appendPalettes(project.id)
@@ -138,7 +136,7 @@ async function appendPalettes(projectId) {
   const palettes = await response.json();
   palettes.forEach(palette => {
     if (palette.project_id === projectId) {
-      $(`#${projectId}`).append(`
+      $(`#${projectId}`).prepend(`
         <section>
           <h4>${palette.palette_name}</h4>
           <section>
@@ -148,6 +146,7 @@ async function appendPalettes(projectId) {
             <article style="background-color: ${palette.color_4}">${palette.color_4}</article>
             <article style="background-color: ${palette.color_5}">${palette.color_5}</article>
           </section>
+          <button id="palette.id">discard</button>
         </section>`)
     }
   })
@@ -159,41 +158,6 @@ function populateDropdown(data) {
   })
 }
 
-
-
-// function showProjectsAndPalettes(results) {
-//   results.forEach(result => {
-//     return $('.projects').append(`
-//       <h2>${result.name}</h2>
-//       <h3>palette name</h3>
-//       <section class='tiny-palette'>
-//         <article>color[0]</article>
-//         <article>color[1]</article>
-//         <article>color[2]</article>
-//         <article>color[3]</article>
-//         <article>color[4]</article>
-//       </section>
-//       `)
-//   })
-// }
-
-// function getPalettes(results) {
-//   var projectIds = results.map(result => {
-//     return fetchPalettes(result.id)
-//   })
-
-//   var resolvedPromises = Promise.all(projectIds)
-//   // console.log(resolvedPromises)
-//   return resolvedPromises
-// }
-
-// function fetchPalettes(id) {
-//   // console.log(id)
-//   return fetch(`/api/v1/palettes/${id}`)
-//     .then(response => response.json())
-//     .then(result => console.log(result)) 
-   
-// }
 
 
 
