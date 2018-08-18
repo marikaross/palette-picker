@@ -3,6 +3,7 @@ $('.lock').on('click', toggleLock);
 $('.save').on('click', savePalette);
 $('.save-project').on('submit', saveProject);
 $('.save-palette').on('submit', savePalette);
+$('.saved-projects').on('click', '.delete', deletePalette);
 
 $(window).on('load', welcome);
 
@@ -19,8 +20,8 @@ function getAColor() {
   var hex = '0123456789ABCDEF',
   color = '#', i;
   for (i = 0; i < 6 ; i++) {
-  color = color + hex[Math.floor(Math.random() * 16)];
-  }
+    color = color + hex[Math.floor(Math.random() * 16)];
+    }
   return color;
 }
 
@@ -99,20 +100,6 @@ function postProject(project) {
   })
 }
 
-// function getProjects() {
-//   return fetch('/api/v1/projects')
-//     .then(response => response.json())
-//     .then(result => {
-//       populateDropdown(result)
-//       getPalettes(result)
-//       .then(bananas => console.log
-//         (bananas))
-//       // console.log(palettes)
-//       // return palettes
-//     })
-//     .catch(error => console.log(error))
-// }
-
 async function getProjects() {
   $('.saved-projects').empty();
   const response = await fetch('/api/v1/projects');
@@ -136,8 +123,8 @@ async function appendPalettes(projectId) {
   const palettes = await response.json();
   palettes.forEach(palette => {
     if (palette.project_id === projectId) {
-      $(`#${projectId}`).prepend(`
-        <section>
+      $(`#${projectId}`).append(`
+        <section class='palette-section'>
           <h4>${palette.palette_name}</h4>
           <section>
             <article style="background-color: ${palette.color_1}">${palette.color_1}</article>
@@ -146,7 +133,7 @@ async function appendPalettes(projectId) {
             <article style="background-color: ${palette.color_4}">${palette.color_4}</article>
             <article style="background-color: ${palette.color_5}">${palette.color_5}</article>
           </section>
-          <button id="palette.id">discard</button>
+          <button class="delete" id="${palette.id}">discard</button>
         </section>`)
     }
   })
@@ -158,6 +145,18 @@ function populateDropdown(data) {
   })
 }
 
+async function deletePalette(event) {
+  $(this).closest('section').remove()
+  const id = event.target.id
+  const responseBody = 
+  {method: 'DELETE',
+  headers: {'Content-Type': 'application/json'}
+  }
+
+  const response = fetch(`/api/v1/palettes/${id}`, responseBody);
+  const result = await response.json();
+
+}
 
 
 
