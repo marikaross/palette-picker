@@ -115,3 +115,104 @@ describe ('GET to /api/v1/palettes', () => {
     done()
   })
 })
+
+describe('POST /api/v1/projects', () => {
+    beforeEach( done => {
+    knex.migrate.rollback()
+    .then(() => {
+      knex.migrate.latest()
+      .then(() => {
+        return knex.seed.run()
+        .then(() =>{
+          done()
+        })
+      })
+    })
+  })
+
+  it('should add a project', done => {
+    chai.request(server)
+    .post('/api/v1/projects')
+    .send({
+      project_name: 'Banana'
+    })
+    .end((err, response) => {
+      response.should.have.status(201)
+      response.should.be.json
+      response.body.should.be.a('object')
+      response.body.should.have.property('id')
+      response.body.id.should.equal(2)
+    })
+    done()
+  })
+
+  it('should not create an entry if data is missing', done => {
+    chai.request(server)
+    .post('/api/v1/projects')
+    .send({
+    })
+    .end((err, response) => { 
+      response.should.have.status(422)
+      response.body.error.should.equal('Expected format: { name: <STRING> }. You are missing a "project_name" property.')
+    })
+    done()
+  })
+})
+
+describe('POST /api/v1/projects', () => {
+    beforeEach( done => {
+    knex.migrate.rollback()
+    .then(() => {
+      knex.migrate.latest()
+      .then(() => {
+        return knex.seed.run()
+        .then(() =>{
+          done()
+        })
+      })
+    })
+  })
+
+  it('should add a palette', done => {
+    chai.request(server)
+    .post('/api/v1/palettes')
+    .send({
+      palette_name: 'Cherry',
+      color_1: "#6F0060",
+      color_2: "#6F0060",
+      color_3: "#6F0060",
+      color_4: "#6F0060",
+      color_5: "#6F0060",
+      id: 3,
+      project_id: 1
+    })
+    .end((err, response) => {
+      response.should.have.status(201)
+      response.should.be.json
+      response.body.should.be.a('object')
+      response.body.should.have.property('id')
+      response.body.id.should.equal(3)
+    })
+    done()
+  })
+
+  it('should not create an entry if data is missing', done => {
+
+    chai.request(server)
+    .post('/api/v1/palettes')
+    .send({
+      color_1: "#6F0060",
+      color_2: "#6F0060",
+      color_3: "#6F0060",
+      color_4: "#6F0060",
+      color_5: "#6F0060",
+      id: 3,
+      project_id: 1
+    })
+    .end((err, response) => { 
+      response.should.have.status(422)
+      response.body.error.should.equal('Expected format: {name: <STRING>, color_1: <STRING>, color_2: <STRING>, color_3: <STRING>, color_4: <STRING>, color_5: <STRING>, project_id: <NUMBER>}. You are missing a "palette_name" property.')
+    })
+    done()
+  })
+})
