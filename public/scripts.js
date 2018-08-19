@@ -155,7 +155,7 @@ async function deletePalette(event) {
   headers: {'Content-Type': 'application/json'}
   }
 
-  const response = fetch(`/api/v1/palettes/${id}`, responseBody);
+  const response = await fetch(`/api/v1/palettes/${id}`, responseBody)
   const result = await response.json();
 }
 
