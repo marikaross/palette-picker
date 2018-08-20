@@ -10,7 +10,6 @@ $('.saved-projects').on('click', '.mini-color', makeItBig)
 $(window).on('load', welcome);
 
 var colors = []
-var savedColors = []
 
 function welcome() {
   makePalette()
@@ -50,7 +49,6 @@ function savePalette(event) {
     colors.push($(this).text())
   })
   var paletteName = $('.palette-name').val()
-  console.log(paletteName)
   var projectId = $('select option:selected').val();
   var paletteToSave = { palette_name: paletteName, hexCodes: [...colors], project_id: projectId}
   postPalette(paletteToSave)
@@ -74,6 +72,7 @@ function postPalette(palette) {
     })
   .then(response => console.log(response))
   .catch(error => console.log(error.message))
+  getProjects()
 }
 
 
@@ -127,15 +126,17 @@ async function appendPalettes(projectId) {
     if (palette.project_id === projectId) {
       $(`#${projectId}`).append(`
         <section class='palette-section' id="${palette.id}">
-          <h4>${palette.palette_name}</h4>
-          <section>
+          <section class="mini-palettes">
+            <h4 class="palette-name">${palette.palette_name}</h4>
+            <button class="delete" id="${palette.id}">X</button>
+          </section>
+          <div class="tiny-colors">
             <article class="mini-color" style="background-color: ${palette.color_1}">${palette.color_1}</article>
             <article class="mini-color" style="background-color: ${palette.color_2}">${palette.color_2}</article>
             <article class="mini-color" style="background-color: ${palette.color_3}">${palette.color_3}</article>
             <article class="mini-color" style="background-color: ${palette.color_4}">${palette.color_4}</article>
             <article class="mini-color" style="background-color: ${palette.color_5}">${palette.color_5}</article>
-          </section>
-          <button class="delete" id="${palette.id}">discard</button>
+          </div>
         </section>`)
     }
   })
@@ -148,7 +149,7 @@ function populateDropdown(data) {
 }
 
 async function deletePalette(event) {
-  $(this).closest('section').remove()
+  $(this).parents('.palette-section').remove()
   const id = event.target.id
   const responseBody = 
   {method: 'DELETE',
