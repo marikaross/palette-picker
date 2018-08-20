@@ -49,7 +49,6 @@ function savePalette(event) {
     colors.push($(this).text())
   })
   var paletteName = $('.palette-name').val()
-  console.log(paletteName)
   var projectId = $('select option:selected').val();
   var paletteToSave = { palette_name: paletteName, hexCodes: [...colors], project_id: projectId}
   postPalette(paletteToSave)
@@ -150,7 +149,7 @@ function populateDropdown(data) {
 }
 
 async function deletePalette(event) {
-  $(this).closest('section').remove()
+  $(this).parents('.palette-section').remove()
   const id = event.target.id
   const responseBody = 
   {method: 'DELETE',
