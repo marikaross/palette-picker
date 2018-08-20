@@ -79,26 +79,19 @@ function postPalette(palette) {
 function saveProject(event) {
   event.preventDefault()
   var newProject = $('.project-name').val()
-  $('.folder-name').append(`<option>${newProject}</option>`)
   const project = {project_name: newProject}
   postProject(project)
 }
 
-function postProject(project) {
-  var url = '/api/v1/projects'
-  fetch(url, 
+async function postProject(project) {
+  const url = '/api/v1/projects'
+  const response = await fetch(url, 
     {method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(project)
     })
-  .then(response => response.json())
-  .then(id => {
-     $('.folder-name').append(`<option value='${id}'>${project.project_name}</option>`)
-  })
-
-  .catch(error => {
-    console.log(error.message)
-  })
+  const result = await response.json()
+  $('.folder-name').append(`<option value='${result.id}'>${project.project_name}</option>`)
 }
 
 async function getProjects() {
