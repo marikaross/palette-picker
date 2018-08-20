@@ -2,6 +2,10 @@ body,
 main {
   width: 100vw;
   height: 100vh;
+  background-color: #191919;
+  font-family: 'Quicksand', sans serif;
+  font-weight: 400;
+  color: #bbbbbb;
 }
 
 article {
@@ -10,12 +14,17 @@ article {
   justify-content: space-between;
   align-items: center;
   width: 18%;
-  height: 75vh;
+  height: 60vh;
 }
 
-section {
+header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.palette {
   width: 100%;
-  height: 100vh;
+  height: 65vh;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -43,3 +52,67 @@ section {
   height: 35px;
   margin-bottom: 20px;
 }
+
+.mini-color {
+  height: 10vh;
+}
+
+.tiny-colors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.saved-projects {
+  margin: 10px;
+}
+
+select {
+  background-color: #101010;
+  color: #bbbbbb;
+}
+
+input {
+  background-color: #101010;
+  color: #bbbbbb;
+  border: none;
+}
+
+.save-palette {
+  width: 35%;
+  margin: 0 auto;
+  border: none;
+}
+
+.save-project {
+  margin: 0 auto;
+  width: 20%;
+  border: none;
+}
+
+.hr {
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+ width: 90%
+}
+
+.delete {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  background-color: #bbbbbb;
+  margin-top: 20px;
+}
+
+.mini-palettes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+
