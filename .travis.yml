@@ -7,3 +7,5 @@ node_js:
 
   before_script:
     - psql -c 'CREATE DATABASE colors_test;' -U postgres
+  notifications:
+    email: false
