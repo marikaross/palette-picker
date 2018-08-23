@@ -4,7 +4,7 @@ $('.save').on('click', savePalette);
 $('.save-project').on('submit', saveProject);
 $('.save-palette').on('submit', savePalette);
 $('.saved-projects').on('click', '.delete', deletePalette);
-$('.saved-projects').on('click', '.mini-color', makeItBig)
+$('.saved-projects').on('click', '.mini-color', makeItBig);
 
 
 $(window).on('load', welcome);
@@ -15,7 +15,6 @@ function welcome() {
   makePalette()
   getProjects()
 }
-
 
 
 function getAColor() {
