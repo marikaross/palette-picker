@@ -1,9 +1,16 @@
 language: node_js
 node_js:
-  - "node"
-services: 
-  - postgresql
+- node
+services:
+- postgresql
 before_script:
-  - psql -c 'CREATE DATABASE colors_test;' -U postgres
+- psql -c 'CREATE DATABASE colors_test;' -U postgres
 notifications:
   email: false
+deploy:
+  provider: heroku
+  api_key:
+    secure: H6Eh0a1y/+LekWTNIgRklQeO4Nl3vNLvFpRUFbI8wqsNbJliaD8jI9dOWGHIEYsXuGrFz0rvLEo3SQnw1JCf2KilJACeGsZi0VdUNMufW9ynDwp2+wQNL58OU4oKNrQzDOnK/lzjEBHlkAoVtcNM4aOK9N7bhFv8JTkk/H0Ojf6+ZfAiiLI0k4MlSbSWJMWvlWsczTYXjcI0ZupVigOLTuF26mfhogg58eeyPU3opWZMHbyFA2NHX81ZrADbYh5NbcGIAj2E5qlKyd0KsZA1Kq/bTTSncWTqGrho53+K5DO8X2vOuzd/DmqYNIA17uLJ8TXC6tOA+OuMDttAkJvCRo8paxQkeiDTkwqTHs2MbC5E8VUY91+CJ2GwFrmnhEq8Kbzl56uoqS/22oQ87W7DrWeQcqNITmJ+jK7vhmcoIyJs9LtJbzCDG4K1quWEqCvjiqccb/dO1JfCX+/8kpd8/OcTRO1z1NeAjH9raQRWef5djsUtdq8Jzo2XmM3/YLAwLw5lpQFBi75KnTUacdSCfcnGwJUq+xSA7tlTSoQQ9k068fNkM8e9x6SKv9wsJ4YBYjh2CE0FmpHn7Bu782o3zYKsXpJ9UdlQELZGqMbh3wThhervOht/URWrarpe3xTqsIxycXXx2lTUu1CZOAcgBRBDB3kS5DkI8Bb1MG/Xdbw=
+  app: so-many-colors
+  on:
+    repo: marikaross/palette-picker
